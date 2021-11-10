@@ -276,6 +276,18 @@
           <div class="col-lg-12">
               <div class="card">
                   <div class="card-body">
+                      <div class="container fluid">
+                        {{-- mensaje de alerta --}}
+                        @if (session('message'))
+                        <div class="row mb-2">
+                            <div class="col-lg-12">
+                                <div class="alert alert-success">
+                                    {{ session('message') }}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                      </div>
                     @yield('content')
                   </div>
               </div>
