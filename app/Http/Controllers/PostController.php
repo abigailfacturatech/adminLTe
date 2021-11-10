@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -12,8 +14,11 @@ class PostController extends Controller
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        # code...
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+        $post = Post::create($data);
+        return 'el registro se guardo con exito';
     }
 }

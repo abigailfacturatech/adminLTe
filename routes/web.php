@@ -22,6 +22,8 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function(){
 
+
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // Route::name('create_post_path')->get('/post', [PostController::class, 'create']);
@@ -29,3 +31,4 @@ Route::middleware(['auth'])->group(function(){
 });
 
 Route::name('create_post_path')->get('/post', [PostController::class, 'create']);
+Route::name('store_post_path')->post('/post', [PostController::class, 'store']);
