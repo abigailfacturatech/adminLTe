@@ -14,7 +14,10 @@ use App\Http\Controllers\HomeController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
 
+});
 
 Auth::routes();
 
@@ -30,10 +33,10 @@ Route::middleware(['auth'])->group(function(){
 
 });
 
-Route::get('/', function () {
-    return view('layouts.master');
+// Route::get('/', function () {
+//     return view('');
 
-});
+// });
 
 
 Route::name('index_post_path')->get('/post', [PostController::class, 'index']);

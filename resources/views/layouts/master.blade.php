@@ -187,7 +187,7 @@
             </a>
           </li>
           {{--  --}}
-          <a href="{{route('store_post_path')}}" class="nav-link">
+          <a href="{{route('index_post_path')}}" class="nav-link">
             <i class="nav-icon fas fa-users""></i>
             <p>
              Notifications
@@ -295,5 +295,6 @@
 <!-- REQUIRED SCRIPTS -->
 
     <script src="{{ asset('js/app.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>
