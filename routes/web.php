@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +14,7 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
 
-});
 
 Auth::routes();
 
@@ -24,11 +22,21 @@ Route::middleware(['auth'])->group(function(){
 
 
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-    // Route::name('create_post_path')->get('/post', [PostController::class, 'create']);
+    Route::name('home')->get('/', [HomeController::class, 'index']);
+    Route::name('create_post_path')->get('/post/create', [PostController::class, 'create']);
+    Route::name('markAsRead_post_path')->get('/post/markAsRead', [PostController::class,'markAsRead']);
+    //Route::name('markAsRead_post_path')->get('/post/markAsRead',[PostController::class, 'markAsRead']);
+    Route::name('markNotification')->post('/post/markNotification',[PostController::class, 'markNotification']);
 
 });
 
-Route::name('create_post_path')->get('/post', [PostController::class, 'create']);
+Route::get('/', function () {
+    return view('layouts.master');
+
+});
+
+
+Route::name('index_post_path')->get('/post', [PostController::class, 'index']);
+
 Route::name('store_post_path')->post('/post', [PostController::class, 'store']);
+// Route::name('create_post_path')->get('/post', [PostController::class, 'create']);

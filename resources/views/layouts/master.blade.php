@@ -19,7 +19,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="index.html" class="nav-link">Home</a>
       </li>
 
     </ul>
@@ -56,30 +56,39 @@
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-bell"></i>
               @if(count(auth()->user()->unreadNotifications))
-            <span class="badge badge-warning">{{ count(auth()->user()->unreadNotifications) }}</span>
+            <span class="badge badge-warning">{{ count(auth()->user()->unreadNotifications) }}
               @endif
+            </span>
         </a>
+
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+            <span class="dropdown-header">Unread Notifications</span>
+            @forelse (auth()->user()->unreadNotifications as $notification)
+            <a href="#" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> {{ $notification->data['title'] }}
+            <span class="ml-3 pull-right text-muted text-sm">{{ $notification->created_at->diffForHumans() }}</span>
           </a>
-          <div class="dropdown-divider"></div>
+            @empty
+          <span class="ml-3 pull-right text-muted text-sm">Sin notificaciones por leer</span>
+
+            @endforelse
+            <div class="dropdown-divider"></div>
+            <span class="dropdown-header">Read Notifications</span>
+            @forelse (auth()->user()->readNotifications as $notification)
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
+            <i class="fas fa-users mr-2"></i>{{ $notification->data['description'] }}
+            <span class="ml-3 pull-right text-muted text-sm">{{ $notification->created_at->diffForHumans() }}</span>
           </a>
+          @empty
+            <span class="ml-3 pull-right text-muted text-sm">Sin notificaciones</span>
+
+          @endforelse
+
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <a href="{{ route('markAsRead_post_path') }}" class="dropdown-item dropdown-footer">Mark all as read</a>
         </div>
       </li>
+{{--
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -89,7 +98,7 @@
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
         </a>
-      </li>
+      </li> --}}
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -97,9 +106,9 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="index.html" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">AdminLTE </span>
     </a>
 
     <!-- Sidebar -->
@@ -177,8 +186,19 @@
               </p>
             </a>
           </li>
+          {{--  --}}
+          <a href="{{route('store_post_path')}}" class="nav-link">
+            <i class="nav-icon fas fa-users""></i>
+            <p>
+             Notifications
+
+            </p>
+          </a>
+        </li>
           {{-- Abi se toma el login de laravel para cerrar sesion --}}
-          <li class="nav-item ">
+
+
+            <li class="nav-item ">
             <a class="nav-link" href="{{ route('logout') }}"onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();"><i class="nav-icon fas fa-blog">Logout</i></a>
 

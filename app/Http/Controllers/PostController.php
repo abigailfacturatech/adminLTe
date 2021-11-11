@@ -9,6 +9,7 @@ use App\Notifications\PostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class PostController extends Controller
 {
     public function create()
@@ -22,20 +23,29 @@ class PostController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::id();
         $post = Post::create($data);
-
-        // auth()->user()->notify(new PostNotification($post));
-
-        // User::all()
-        //     ->except($post->user_id)
-        //     ->each(function(User $user) use ($post)
-        //     {
-        //        $user->notify(new PostNotification($post));
-        //     });
-
         event(new PostEvent($post));
-
         return redirect()->back()->with('message', 'Post created successfully');
-        // return 'el registro se guardo con exito';
 
+    }
+    public function index()
+    {
+
+        $postNotifications = auth()->user()->unreadNotifications;
+        return view('post.notification', compact('postNotifications'));
+    }
+
+    public function markAsRead()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return redirect()->back();
+    }
+    public function markNotification(Request $request)
+    {
+        auth()->user()->unreadNotifications
+        ->when($request->input('id'), function($query)use ($request){
+            return $query->where('id', $request->input('id'));
+
+        })->markAsRead();
+        return response()->noContent();
     }
 }
